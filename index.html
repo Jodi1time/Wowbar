@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -40,11 +39,24 @@ body{
 a{text-decoration:none;color:inherit}
 button{border:none;cursor:pointer;font-family:var(--ff-b)}
 
+/* ── REVEAL (CSS-driven, no GSAP dependency) ───────────── */
+.reveal{
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+             transform 0.75s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.in-view{
+  opacity:1;
+  transform:none;
+}
+
+/* ── NAV ───────────────────────────────────────────────── */
 .nav{
   position:fixed;top:1.25rem;left:50%;z-index:300;
   transform:translateX(-50%);
   display:flex;align-items:center;
-  background:rgba(245,243,236,0.8);
+  background:rgba(245,243,236,0.85);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   border:1px solid var(--line2);
@@ -92,6 +104,7 @@ button{border:none;cursor:pointer;font-family:var(--ff-b)}
   .burger{display:flex;align-items:center;justify-content:center}
 }
 
+/* ── DRAWER ────────────────────────────────────────────── */
 .drawer{
   position:fixed;inset:0;z-index:290;
   background:var(--ink);
@@ -122,6 +135,7 @@ button{border:none;cursor:pointer;font-family:var(--ff-b)}
 .drawer-contact{margin-top:2.5rem;font-size:0.9rem;color:rgba(245,243,236,0.5);opacity:0;transition:opacity 0.5s var(--ease-out4) 0.4s}
 .drawer.open .drawer-contact{opacity:1}
 
+/* ── BUTTONS ───────────────────────────────────────────── */
 .btn{
   display:inline-flex;align-items:center;gap:0.55rem;
   font-size:0.85rem;font-weight:600;
@@ -144,6 +158,7 @@ button{border:none;cursor:pointer;font-family:var(--ff-b)}
 .btn-light .iw{background:rgba(20,18,12,0.1)}
 .btn-light:hover{background:#fff;transform:translateY(-2px)}
 
+/* ── HERO ──────────────────────────────────────────────── */
 .hero{
   min-height:100dvh;
   padding:10rem 5vw 4rem;
@@ -178,6 +193,7 @@ button{border:none;cursor:pointer;font-family:var(--ff-b)}
 .mq-item .s{color:var(--orange)}
 @keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
+/* ── SECTIONS ──────────────────────────────────────────── */
 section{padding:7rem 5vw}
 .wrap{max-width:1340px;margin:0 auto}
 .eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange);margin-bottom:1.1rem}
@@ -186,6 +202,7 @@ section{padding:7rem 5vw}
 .lead{font-size:1.05rem;color:var(--soft);max-width:52ch;line-height:1.7}
 .sec-head{margin-bottom:3.5rem}
 
+/* ── STATS ─────────────────────────────────────────────── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:3rem 5vw;border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
 .stat .num{font-family:var(--ff-d);font-weight:900;font-size:clamp(2.6rem,5vw,4rem);letter-spacing:-0.04em;line-height:1}
 .stat:nth-child(1) .num{color:var(--orange)}
@@ -195,6 +212,7 @@ section{padding:7rem 5vw}
 .stat .lab{font-size:0.78rem;font-weight:500;color:var(--soft);margin-top:0.4rem;letter-spacing:0.02em}
 @media(max-width:640px){.stats{grid-template-columns:1fr 1fr;gap:2.2rem}}
 
+/* ── BENTO ─────────────────────────────────────────────── */
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
 .tile{
   border-radius:1.6rem;overflow:hidden;position:relative;
@@ -233,6 +251,7 @@ section{padding:7rem 5vw}
 }
 @media(max-width:560px){.bento{grid-template-columns:1fr}.t7{grid-column:span 1}}
 
+/* ── ENTERTAINMENT ─────────────────────────────────────── */
 .ent-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .ent{border:1.5px solid var(--line);border-radius:1.4rem;padding:2rem;background:var(--paper);transition:background 0.4s,border-color 0.4s,transform 0.5s var(--ease-out4)}
 .ent:hover{transform:translateY(-4px);border-color:var(--line2);background:#faf8f2}
@@ -246,10 +265,12 @@ section{padding:7rem 5vw}
 .ent-d{font-size:0.9rem;color:var(--soft);line-height:1.65}
 @media(max-width:720px){.ent-wrap{grid-template-columns:1fr}}
 
+/* ── MENU ──────────────────────────────────────────────── */
 .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .dish{border-radius:1.4rem;overflow:hidden;border:1.5px solid var(--line);background:var(--paper);transition:transform 0.5s var(--ease-out4),box-shadow 0.5s}
 .dish:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(20,18,12,0.10)}
 .dish-art{height:200px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.dish-art img{width:100%;height:100%;object-fit:cover;display:block}
 .dish-art .ring{position:absolute;width:90px;height:90px;border-radius:50%;border:2px solid rgba(255,255,255,0.35)}
 .dish-art .ring::after{content:'';position:absolute;inset:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.25)}
 .dish-art .emoji{font-size:3.4rem;position:relative;z-index:2}
@@ -263,6 +284,7 @@ section{padding:7rem 5vw}
 @media(max-width:820px){.menu-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:540px){.menu-grid{grid-template-columns:1fr}}
 
+/* ── EVENTS ────────────────────────────────────────────── */
 .events{background:var(--ink);color:var(--paper)}
 .events .eyebrow{color:#ff7a3d}
 .events .eyebrow::before{background:#ff7a3d}
@@ -284,6 +306,7 @@ section{padding:7rem 5vw}
 .events-list li i{color:var(--orange);font-size:1.15rem;flex-shrink:0}
 @media(max-width:820px){.events-layout{grid-template-columns:1fr;gap:2.5rem}}
 
+/* ── REVIEWS ───────────────────────────────────────────── */
 .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .rev{border:1.5px solid var(--line);border-radius:1.4rem;padding:1.7rem;background:var(--paper);transition:transform 0.5s var(--ease-out4),box-shadow 0.5s}
 .rev:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(20,18,12,0.08)}
@@ -299,6 +322,7 @@ section{padding:7rem 5vw}
 @media(max-width:820px){.rev-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:540px){.rev-grid{grid-template-columns:1fr}}
 
+/* ── LOCATION ──────────────────────────────────────────── */
 .loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
 .info{display:flex;flex-direction:column;gap:0.9rem;margin:2rem 0 2.4rem}
 .info-row{display:flex;align-items:flex-start;gap:0.9rem;padding:1.1rem 1.3rem;border:1.5px solid var(--line);border-radius:1rem;transition:border-color 0.3s,background 0.3s}
@@ -321,11 +345,13 @@ section{padding:7rem 5vw}
 .map-label span{font-size:0.74rem;color:rgba(245,243,236,0.6)}
 @media(max-width:820px){.loc-grid{grid-template-columns:1fr;gap:2.5rem}}
 
+/* ── CTA ───────────────────────────────────────────────── */
 .cta-band{background:var(--orange);color:#fff;text-align:center}
 .cta-band .h2{color:#fff}
 .cta-band p{font-size:1.05rem;color:rgba(255,255,255,0.9);max-width:48ch;margin:0 auto 2.2rem;line-height:1.65}
 .cta-band .btns{display:flex;gap:0.9rem;justify-content:center;flex-wrap:wrap}
 
+/* ── FOOTER ────────────────────────────────────────────── */
 footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
 .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3rem;max-width:1340px;margin:0 auto}
 .foot-logo{font-family:var(--ff-d);font-weight:900;font-size:2.2rem;letter-spacing:-0.04em;margin-bottom:0.8rem}
@@ -367,7 +393,7 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
 
 <section class="hero" id="home">
   <div class="wrap" style="width:100%">
-    <div class="hero-tag" id="hero-tag"><span class="dot"></span> Open tonight &middot; Opebi, Ikeja</div>
+    <div class="hero-tag"><span class="dot"></span> Open tonight &middot; Opebi, Ikeja</div>
     <h1 class="hero-h1" id="hero-h1">
       The <span class="o">heartbeat</span><br>of <span class="g">Lagos</span> nightlife.
     </h1>
@@ -402,10 +428,10 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
 </section>
 
 <div class="stats">
-  <div class="stat"><div class="num counter" data-target="4.4" data-suffix="" data-dec="1">4.4</div><div class="lab">Google Rating &#9733;</div></div>
-  <div class="stat"><div class="num counter" data-target="75" data-suffix="+" data-dec="0">75+</div><div class="lab">Five-Star Reviews</div></div>
-  <div class="stat"><div class="num counter" data-target="6" data-suffix="" data-dec="0">6</div><div class="lab">Unique Spaces</div></div>
-  <div class="stat"><div class="num">&#8358;10k+</div><div class="lab">Per Head, Any Night</div></div>
+  <div class="stat reveal"><div class="num">4.4&#9733;</div><div class="lab">Google Rating</div></div>
+  <div class="stat reveal" style="transition-delay:0.1s"><div class="num">75+</div><div class="lab">Five-Star Reviews</div></div>
+  <div class="stat reveal" style="transition-delay:0.2s"><div class="num">6</div><div class="lab">Unique Spaces</div></div>
+  <div class="stat reveal" style="transition-delay:0.3s"><div class="num">&#8358;10k+</div><div class="lab">Per Head, Any Night</div></div>
 </div>
 
 <section id="experiences">
@@ -417,12 +443,12 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
     </div>
     <div class="bento">
       <div class="tile t1 reveal"><div class="tile-ic"><i class="ph ph-tree-evergreen"></i></div><div><div class="tile-tag">Signature Space</div><div class="tile-title">Outdoor Bush Bar</div><div class="tile-desc">Our flagship open-air experience. Raw, earthy and electric &mdash; cold drinks and warm company under the Lagos sky.</div></div></div>
-      <div class="tile t2 reveal"><div class="tile-ic"><i class="ph ph-flower-lotus"></i></div><div><div class="tile-tag">Serene</div><div class="tile-title">Evening Garden</div><div class="tile-desc">Calm, lush &amp; beautifully lit. The perfect date-night corner.</div></div></div>
-      <div class="tile t3 reveal"><div class="tile-ic"><i class="ph ph-fork-knife"></i></div><div><div class="tile-tag">Dining</div><div class="tile-title">Indoor Restaurant</div><div class="tile-desc">Full-service indoor dining for groups &amp; occasions.</div></div></div>
-      <div class="tile t4 reveal"><div class="tile-ic"><i class="ph ph-armchair"></i></div><div><div class="tile-tag">Premium</div><div class="tile-title">The Lounge</div><div class="tile-desc">Low sofas, warm lighting and the best cocktails in Opebi. Made for elevated evenings and easy conversation.</div></div></div>
-      <div class="tile t5 reveal"><div class="tile-ic"><i class="ph ph-microphone-stage"></i></div><div><div class="tile-tag">Every Weekend</div><div class="tile-title">Karaoke</div><div class="tile-desc">Grab the mic Friday &amp; Saturday nights.</div></div></div>
-      <div class="tile t6 reveal"><div class="tile-ic"><i class="ph ph-martini"></i></div><div><div class="tile-tag">The Bar</div><div class="tile-title">Cocktail Bar</div><div class="tile-desc">Signature mixes, local spirits &amp; imported classics.</div></div></div>
-      <div class="tile t7 reveal"><div><div class="tile-tag">Every Match Day</div><div class="tile-title">Live Football &mdash; EPL, UCL &amp; More</div></div><div class="t7-r">Giant screen. Cold drinks. Electric atmosphere. Football the way it&rsquo;s meant to be watched.</div></div>
+      <div class="tile t2 reveal" style="transition-delay:0.07s"><div class="tile-ic"><i class="ph ph-flower-lotus"></i></div><div><div class="tile-tag">Serene</div><div class="tile-title">Evening Garden</div><div class="tile-desc">Calm, lush &amp; beautifully lit. The perfect date-night corner.</div></div></div>
+      <div class="tile t3 reveal" style="transition-delay:0.14s"><div class="tile-ic"><i class="ph ph-fork-knife"></i></div><div><div class="tile-tag">Dining</div><div class="tile-title">Indoor Restaurant</div><div class="tile-desc">Full-service indoor dining for groups &amp; occasions.</div></div></div>
+      <div class="tile t4 reveal" style="transition-delay:0.21s"><div class="tile-ic"><i class="ph ph-armchair"></i></div><div><div class="tile-tag">Premium</div><div class="tile-title">The Lounge</div><div class="tile-desc">Low sofas, warm lighting and the best cocktails in Opebi. Made for elevated evenings and easy conversation.</div></div></div>
+      <div class="tile t5 reveal" style="transition-delay:0.28s"><div class="tile-ic"><i class="ph ph-microphone-stage"></i></div><div><div class="tile-tag">Every Weekend</div><div class="tile-title">Karaoke</div><div class="tile-desc">Grab the mic Friday &amp; Saturday nights.</div></div></div>
+      <div class="tile t6 reveal" style="transition-delay:0.35s"><div class="tile-ic"><i class="ph ph-martini"></i></div><div><div class="tile-tag">The Bar</div><div class="tile-title">Cocktail Bar</div><div class="tile-desc">Signature mixes, local spirits &amp; imported classics.</div></div></div>
+      <div class="tile t7 reveal" style="transition-delay:0.42s"><div><div class="tile-tag">Every Match Day</div><div class="tile-title">Live Football &mdash; EPL, UCL &amp; More</div></div><div class="t7-r">Giant screen. Cold drinks. Electric atmosphere. Football the way it&rsquo;s meant to be watched.</div></div>
     </div>
   </div>
 </section>
@@ -436,9 +462,9 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
     </div>
     <div class="ent-wrap">
       <div class="ent reveal"><div class="ent-ic"><i class="ph ph-soccer-ball"></i></div><div class="ent-t">Live Sports Screening</div><p class="ent-d">Every match day is a stadium experience. EPL, Champions League, AFCON &mdash; the biggest games, the loudest reactions. Cold Guinness &amp; suya on standby.</p></div>
-      <div class="ent reveal"><div class="ent-ic"><i class="ph ph-microphone-stage"></i></div><div class="ent-t">Karaoke Nights</div><p class="ent-d">Claim the mic, own the room. Fridays and Saturdays come alive with sessions that turn strangers into friends. All genres, all generations.</p></div>
-      <div class="ent reveal"><div class="ent-ic"><i class="ph ph-music-notes"></i></div><div class="ent-t">DJ &amp; Live Music</div><p class="ent-d">Afrobeats, R&amp;B, Amapiano. The finest DJs in Lagos set the tone while you vibe in the garden or on the floor.</p></div>
-      <div class="ent reveal"><div class="ent-ic"><i class="ph ph-confetti"></i></div><div class="ent-t">Private Events</div><p class="ent-d">Birthdays, corporate hangouts, bachelor parties, launches. WOW! handles your event from setup to send-off. Call to customise your package.</p></div>
+      <div class="ent reveal" style="transition-delay:0.1s"><div class="ent-ic"><i class="ph ph-microphone-stage"></i></div><div class="ent-t">Karaoke Nights</div><p class="ent-d">Claim the mic, own the room. Fridays and Saturdays come alive with sessions that turn strangers into friends. All genres, all generations.</p></div>
+      <div class="ent reveal" style="transition-delay:0.2s"><div class="ent-ic"><i class="ph ph-music-notes"></i></div><div class="ent-t">DJ &amp; Live Music</div><p class="ent-d">Afrobeats, R&amp;B, Amapiano. The finest DJs in Lagos set the tone while you vibe in the garden or on the floor.</p></div>
+      <div class="ent reveal" style="transition-delay:0.3s"><div class="ent-ic"><i class="ph ph-confetti"></i></div><div class="ent-t">Private Events</div><p class="ent-d">Birthdays, corporate hangouts, bachelor parties, launches. WOW! handles your event from setup to send-off. Call to customise your package.</p></div>
     </div>
   </div>
 </section>
@@ -451,9 +477,18 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
       <p class="lead">From the smoky grill to the shaker, everything at WOW! is made to complement the night.</p>
     </div>
     <div class="menu-grid">
-      <div class="dish reveal"><div class="dish-art art-orange"><div class="ring"></div><div class="emoji">&#128293;</div></div><div class="dish-body"><span class="dish-tag">Street Classic</span><div class="dish-name">Signature Suya</div><p class="dish-desc">Tender, spiced, char-grilled beef skewers with fresh tomatoes, onions &amp; pepper mix. The soul of the bush bar.</p></div></div>
-      <div class="dish reveal"><div class="dish-art art-green"><div class="ring"></div><div class="emoji">&#129366;</div></div><div class="dish-body"><span class="dish-tag">Grill House</span><div class="dish-name">BBQ Platter</div><p class="dish-desc">Grilled chicken, ribs &amp; fish with smoky jerk seasoning, coleslaw &amp; plantain. Built for sharing, finished alone.</p></div></div>
-      <div class="dish reveal"><div class="dish-art art-purple"><div class="ring"></div><div class="emoji">&#127864;</div></div><div class="dish-body"><span class="dish-tag">Cocktail Menu</span><div class="dish-name">Signature Cocktails</div><p class="dish-desc">Crafted in-house by our bartenders. From classic mojitos to house specials built around local spirits.</p></div></div>
+      <div class="dish reveal">
+        <div class="dish-art art-orange"><div class="ring"></div><div class="emoji">&#128293;</div></div>
+        <div class="dish-body"><span class="dish-tag">Street Classic</span><div class="dish-name">Signature Suya</div><p class="dish-desc">Tender, spiced, char-grilled beef skewers with fresh tomatoes, onions &amp; pepper mix. The soul of the bush bar.</p></div>
+      </div>
+      <div class="dish reveal" style="transition-delay:0.12s">
+        <div class="dish-art art-green"><div class="ring"></div><div class="emoji">&#129366;</div></div>
+        <div class="dish-body"><span class="dish-tag">Grill House</span><div class="dish-name">BBQ Platter</div><p class="dish-desc">Grilled chicken, ribs &amp; fish with smoky jerk seasoning, coleslaw &amp; plantain. Built for sharing, finished alone.</p></div>
+      </div>
+      <div class="dish reveal" style="transition-delay:0.24s">
+        <div class="dish-art art-purple"><div class="ring"></div><div class="emoji">&#127864;</div></div>
+        <div class="dish-body"><span class="dish-tag">Cocktail Menu</span><div class="dish-name">Signature Cocktails</div><p class="dish-desc">Crafted in-house by our bartenders. From classic mojitos to house specials built around local spirits.</p></div>
+      </div>
     </div>
     <div style="text-align:center;margin-top:2.8rem">
       <a href="tel:+2348023377721" class="btn btn-dark" style="display:inline-flex">Ask About the Full Menu <span class="iw"><i class="ph ph-chat-circle-text"></i></span></a>
@@ -464,8 +499,13 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
 <section id="events" class="events">
   <div class="wrap">
     <div class="events-layout">
-      <div class="reveal"><div class="events-card"><div class="events-card-big">Make it<br>your <span class="o">night.</span></div><div class="events-card-meta">Private events from &#8358;50,000 all-in. Corporate, social &amp; celebrations &mdash; fully catered, fully yours.</div></div></div>
       <div class="reveal">
+        <div class="events-card">
+          <div class="events-card-big">Make it<br>your <span class="o">night.</span></div>
+          <div class="events-card-meta">Private events from &#8358;50,000 all-in. Corporate, social &amp; celebrations &mdash; fully catered, fully yours.</div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:0.15s">
         <div class="eyebrow">Events &amp; Bookings</div>
         <h2 class="h2">From 10 guests<br>to 200.</h2>
         <p class="lead">Whatever the occasion, WOW! Bar Lounge turns your event into something legendary.</p>
@@ -491,11 +531,11 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
     </div>
     <div class="rev-grid">
       <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;Best outdoor bar experience in Ikeja. The bush bar vibe is unlike anything else in Lagos &mdash; cold drinks, good music, genuine hospitality.&rdquo;</p><div class="rev-by"><div class="rev-av">A</div><div><div class="rev-nm">Adaeze O.</div><div class="rev-dt">Google &middot; May 2025</div></div></div></div>
-      <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;Came for karaoke, stayed till 2am. The staff is incredible, the suya is elite, and the cocktails actually taste like something. WOW is right.&rdquo;</p><div class="rev-by"><div class="rev-av">T</div><div><div class="rev-nm">Tunde B.</div><div class="rev-dt">Google &middot; March 2025</div></div></div></div>
-      <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p class="rev-text">&ldquo;Hosted my 30th here and it was perfection. Private setup, custom cocktails, and a team that genuinely cares. Back for my 31st for sure.&rdquo;</p><div class="rev-by"><div class="rev-av">C</div><div><div class="rev-nm">Chiamaka N.</div><div class="rev-dt">Google &middot; January 2025</div></div></div></div>
-      <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;Watched the UCL final here and the energy was insane. Giant screen, wild crowd, drinks flowing all night. This is the place.&rdquo;</p><div class="rev-by"><div class="rev-av">E</div><div><div class="rev-nm">Emeka I.</div><div class="rev-dt">Google &middot; April 2025</div></div></div></div>
-      <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;The garden area is so beautiful at night. Fairy lights, cool breeze, soft Afrobeats. Perfect for a date night.&rdquo;</p><div class="rev-by"><div class="rev-av">F</div><div><div class="rev-nm">Fatimah L.</div><div class="rev-dt">Google &middot; February 2025</div></div></div></div>
-      <div class="rev reveal"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p class="rev-text">&ldquo;Solid spot in Opebi. The BBQ platter is a must-try. They give you more than your money&rsquo;s worth &mdash; food and experience.&rdquo;</p><div class="rev-by"><div class="rev-av">K</div><div><div class="rev-nm">Kelechi A.</div><div class="rev-dt">Google &middot; December 2024</div></div></div></div>
+      <div class="rev reveal" style="transition-delay:0.1s"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;Came for karaoke, stayed till 2am. The staff is incredible, the suya is elite, and the cocktails actually taste like something. WOW is right.&rdquo;</p><div class="rev-by"><div class="rev-av">T</div><div><div class="rev-nm">Tunde B.</div><div class="rev-dt">Google &middot; March 2025</div></div></div></div>
+      <div class="rev reveal" style="transition-delay:0.2s"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p class="rev-text">&ldquo;Hosted my 30th here and it was perfection. Private setup, custom cocktails, and a team that genuinely cares. Back for my 31st for sure.&rdquo;</p><div class="rev-by"><div class="rev-av">C</div><div><div class="rev-nm">Chiamaka N.</div><div class="rev-dt">Google &middot; January 2025</div></div></div></div>
+      <div class="rev reveal" style="transition-delay:0.05s"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;Watched the UCL final here and the energy was insane. Giant screen, wild crowd, drinks flowing all night. This is the place.&rdquo;</p><div class="rev-by"><div class="rev-av">E</div><div><div class="rev-nm">Emeka I.</div><div class="rev-dt">Google &middot; April 2025</div></div></div></div>
+      <div class="rev reveal" style="transition-delay:0.15s"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="rev-text">&ldquo;The garden area is so beautiful at night. Fairy lights, cool breeze, soft Afrobeats. Perfect for a date night.&rdquo;</p><div class="rev-by"><div class="rev-av">F</div><div><div class="rev-nm">Fatimah L.</div><div class="rev-dt">Google &middot; February 2025</div></div></div></div>
+      <div class="rev reveal" style="transition-delay:0.25s"><div class="rev-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p class="rev-text">&ldquo;Solid spot in Opebi. The BBQ platter is a must-try. They give you more than your money&rsquo;s worth &mdash; food and experience.&rdquo;</p><div class="rev-by"><div class="rev-av">K</div><div><div class="rev-nm">Kelechi A.</div><div class="rev-dt">Google &middot; December 2024</div></div></div></div>
     </div>
   </div>
 </section>
@@ -517,7 +557,7 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
           <a href="https://maps.google.com/?q=16+Samuel+Awoniyi+Street+Opebi+Ikeja+Lagos" target="_blank" rel="noopener" class="btn btn-outline">Directions <i class="ph ph-navigation-arrow"></i></a>
         </div>
       </div>
-      <div class="reveal">
+      <div class="reveal" style="transition-delay:0.15s">
         <div class="map">
           <div class="map-grid-lines"></div>
           <div class="map-rings"><span></span><span></span><span></span></div>
@@ -575,6 +615,8 @@ footer{padding:4.5rem 5vw 2.5rem;background:var(--ink);color:var(--paper)}
 <script type="module" src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+  /* ── Drawer ── */
   const burger = document.getElementById('burger');
   const drawer = document.getElementById('drawer');
   let open = false;
@@ -582,58 +624,42 @@ document.addEventListener('DOMContentLoaded', function() {
   burger.addEventListener('click', toggle);
   document.querySelectorAll('.drawer-link').forEach(l=>l.addEventListener('click',()=>{ if(open) toggle(); }));
 
-  /* Set opacity via JS only — so content is always visible without JS */
-  const revealEls = document.querySelectorAll('.reveal');
-  revealEls.forEach(el => { el.style.opacity='0'; el.style.transform='translateY(46px)'; });
-
-  /* Hard fallback: show everything if GSAP doesn’t load within 3 seconds */
-  const fallback = setTimeout(() => {
-    revealEls.forEach(el => { el.style.opacity='1'; el.style.transform='none'; el.style.transition='opacity 0.6s, transform 0.6s'; });
-  }, 3000);
-
-  function init(){
-    if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined'){ setTimeout(init,100); return; }
-    clearTimeout(fallback);
-    gsap.registerPlugin(ScrollTrigger);
-
-    const tl = gsap.timeline({ defaults:{ ease:'power4.out', duration:1 } });
-    tl.from('#hero-tag',{ y:18, opacity:0, duration:0.7 }, 0.15)
-      .from('#hero-h1',{ y:60, opacity:0, duration:1.1 }, '-=0.35')
-      .from('#hero-sub',{ y:30, opacity:0 }, '-=0.7')
-      .from('#hero-btns',{ y:24, opacity:0, duration:0.8 }, '-=0.7');
-
-    revealEls.forEach(el=>{
-      gsap.fromTo(el,
-        { y:46, opacity:0 },
-        { scrollTrigger:{ trigger:el, start:'top 88%' }, y:0, opacity:1, duration:0.9, ease:'power3.out' }
-      );
+  /* ── IntersectionObserver reveals (rock-solid, no GSAP needed) ── */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
     });
-    gsap.from('.tile',{ scrollTrigger:{ trigger:'.bento', start:'top 80%' }, y:50, opacity:0, stagger:0.07, duration:0.9, ease:'power3.out' });
-    gsap.from('.ent',{ scrollTrigger:{ trigger:'.ent-wrap', start:'top 82%' }, y:38, opacity:0, stagger:0.1, duration:0.85, ease:'power3.out' });
-    gsap.from('.dish',{ scrollTrigger:{ trigger:'.menu-grid', start:'top 82%' }, y:38, opacity:0, stagger:0.12, duration:0.85, ease:'power3.out' });
-    gsap.from('.rev',{ scrollTrigger:{ trigger:'.rev-grid', start:'top 82%' }, y:32, opacity:0, stagger:0.09, duration:0.8, ease:'power3.out' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    document.querySelectorAll('.counter').forEach(el=>{
-      const target=parseFloat(el.dataset.target), suffix=el.dataset.suffix||'', dec=parseInt(el.dataset.dec||'0');
-      el.textContent='0'+suffix;
-      ScrollTrigger.create({ trigger:el, start:'top 88%', once:true, onEnter:()=>{
-        const o={v:0};
-        gsap.to(o,{ v:target, duration:1.7, ease:'power2.out',
-          onUpdate(){ el.textContent=o.v.toFixed(dec)+suffix; },
-          onComplete(){ el.textContent=target.toFixed(dec)+suffix; } });
-      }});
-    });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    ScrollTrigger.create({ start:'top -60px', onUpdate:self=>{
-      document.getElementById('nav').style.boxShadow = self.progress>0 ? '0 8px 36px rgba(20,18,12,0.12)' : '0 6px 30px rgba(20,18,12,0.06)';
-    }});
+  /* ── Hero intro (GSAP for the big entrance only) ── */
+  function initGsap() {
+    if (typeof gsap === 'undefined') { setTimeout(initGsap, 100); return; }
+    gsap.from('#hero-h1',  { y:60, opacity:0, duration:1.1, ease:'power4.out', delay:0.15 });
+    gsap.from('#hero-sub', { y:30, opacity:0, duration:0.9, ease:'power3.out', delay:0.55 });
+    gsap.from('#hero-btns',{ y:24, opacity:0, duration:0.8, ease:'power3.out', delay:0.7 });
   }
-  init();
+  initGsap();
 
-  document.querySelectorAll('.btn, .nav-cta').forEach(b=>{
-    b.addEventListener('mousemove',e=>{ const r=b.getBoundingClientRect(); b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*0.1}px,${(e.clientY-r.top-r.height/2)*0.1}px)`; });
-    b.addEventListener('mouseleave',()=>{ b.style.transform=''; });
+  /* ── Nav shadow on scroll ── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').style.boxShadow =
+      window.scrollY > 60 ? '0 8px 36px rgba(20,18,12,0.12)' : '0 6px 30px rgba(20,18,12,0.06)';
+  }, { passive: true });
+
+  /* ── Magnetic buttons ── */
+  document.querySelectorAll('.btn, .nav-cta').forEach(b => {
+    b.addEventListener('mousemove', e => {
+      const r = b.getBoundingClientRect();
+      b.style.transform = `translate(${(e.clientX-r.left-r.width/2)*0.1}px,${(e.clientY-r.top-r.height/2)*0.1}px)`;
+    });
+    b.addEventListener('mouseleave', () => { b.style.transform = ''; });
   });
+
 });
 </script>
 </body>
